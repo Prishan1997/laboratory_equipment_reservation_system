@@ -1,0 +1,10 @@
+# OS metadata files
+.DS_Store
+Thumbs.db
+
+# Temporary / sensitive session files
+*.log
+*.tmp
+cookies.txt
+.vscode/
+.idea/
