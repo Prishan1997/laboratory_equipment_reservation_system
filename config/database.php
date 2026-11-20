@@ -24,8 +24,8 @@ function getDBConnection(): PDO
 {
     static $pdo = null;
 
-    if ($pdo === null) {
-        $dsn = sprintf(
+    if ($pdo === null) {  
+        $dsn = sprintf(                        //dsn is a foratted string
             'mysql:host=%s;port=%s;dbname=%s;charset=%s',
             DB_HOST,
             DB_PORT,

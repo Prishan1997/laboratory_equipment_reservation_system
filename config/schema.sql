@@ -10,7 +10,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `notifications`;
 DROP TABLE IF EXISTS `maintenance_logs`;
 DROP TABLE IF EXISTS `reservations`;
-DROP TABLE IF EXISTS `equipment`;
+DROP TABLE IF EXISTS `equipment`; 
 DROP TABLE IF EXISTS `users`;
 SET FOREIGN_KEY_CHECKS = 1;
 

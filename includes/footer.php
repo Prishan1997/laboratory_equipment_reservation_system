@@ -22,6 +22,5 @@ declare(strict_types=1);
     </div>
 </footer>
 
-<script src="assets/js/app.js"></script>
 </body>
 </html>

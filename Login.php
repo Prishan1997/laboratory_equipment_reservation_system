@@ -245,7 +245,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <footer class="auth-page-footer">
     <p>Laboratory Equipment Reservation System &bull; Candidate: Prishan Samarasinghe (MSc in IT) &bull; September 2026</p>
 </footer>
-
-<script src="assets/js/app.js"></script>
 </body>
 </html>

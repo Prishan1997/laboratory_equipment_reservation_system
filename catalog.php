@@ -33,12 +33,11 @@ if ($labRoom !== '' && $labRoom !== 'all') {
     $sql .= " AND lab_location = :lab_location";
     $params[':lab_location'] = $labRoom;
 }
-
 if ($status !== '' && $status !== 'all') {
     $sql .= " AND status = :status";
     $params[':status'] = $status;
 }
-
+ 
 if ($certTier !== '' && $certTier !== 'all') {
     $sql .= " AND req_cert_tier = :cert_tier";
     $params[':cert_tier'] = $certTier;
