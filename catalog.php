@@ -18,7 +18,6 @@ $currentUser = getCurrentUser();
 $keyword  = trim((string)($_GET['keyword'] ?? ''));
 $labRoom  = trim((string)($_GET['lab_location'] ?? ''));
 $status   = trim((string)($_GET['status'] ?? ''));
-$certTier = trim((string)($_GET['cert_tier'] ?? ''));
 
 // Build Dynamic SQL Query
 $sql = "SELECT * FROM equipment WHERE 1=1";
@@ -37,11 +36,6 @@ if ($status !== '' && $status !== 'all') {
     $sql .= " AND status = :status";
     $params[':status'] = $status;
 }
- 
-if ($certTier !== '' && $certTier !== 'all') {
-    $sql .= " AND req_cert_tier = :cert_tier";
-    $params[':cert_tier'] = $certTier;
-}
 
 $sql .= " ORDER BY status ASC, equipment_name ASC";
 $stmt = $pdo->prepare($sql);
@@ -59,11 +53,6 @@ $allLabs = $labStmt->fetchAll(PDO::FETCH_COLUMN);
         <p style="color: var(--text-muted); font-size: 0.95rem;">
             Real-time operational apparatuses across Faculty of Science & Nanotechnology research suites.
         </p>
-    </div>
-    <div>
-        <span class="user-badge" style="background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;">
-            Your Clearance: <strong><?= sanitize($currentUser['cert_tier']) ?></strong>
-        </span>
     </div>
 </div>
 
@@ -104,21 +93,11 @@ $allLabs = $labStmt->fetchAll(PDO::FETCH_COLUMN);
             </select>
         </div>
 
-        <div>
-            <label for="cert_tier" class="form-label">CERT TIER</label>
-            <select id="cert_tier" name="cert_tier" class="form-select">
-                <option value="all">All Tiers</option>
-                <option value="Tier 1" <?= ($certTier === 'Tier 1') ? 'selected' : '' ?>>Tier 1 (General)</option>
-                <option value="Tier 2" <?= ($certTier === 'Tier 2') ? 'selected' : '' ?>>Tier 2 (Chemical/Bio)</option>
-                <option value="Tier 3" <?= ($certTier === 'Tier 3') ? 'selected' : '' ?>>Tier 3 (Laser/Bio)</option>
-            </select>
-        </div>
-
-        <div style="display: flex; gap: 0.5rem;">
+        <div style="display: flex; gap: 0.5rem; align-items: flex-end;">
             <button type="submit" class="btn btn-primary" style="white-space: nowrap;">
                 Apply Filters
             </button>
-            <?php if ($keyword !== '' || $labRoom !== '' || $status !== '' || $certTier !== ''): ?>
+            <?php if ($keyword !== '' || $labRoom !== '' || $status !== ''): ?>
                 <a href="catalog.php" class="btn btn-secondary" title="Reset Filters">✕</a>
             <?php endif; ?>
         </div>
@@ -129,14 +108,13 @@ $allLabs = $labStmt->fetchAll(PDO::FETCH_COLUMN);
 <?php if (empty($equipmentList)): ?>
     <div class="card" style="padding: 3rem; text-align: center; color: var(--text-muted);">
         <h3>No Equipment Found</h3>
-        <p>No laboratory apparatus matched your active search and clearance parameters.</p>
+        <p>No laboratory apparatus matched your active search parameters.</p>
         <a href="catalog.php" class="btn btn-secondary btn-sm" style="margin-top: 1rem;">Reset Filter Parameters</a>
     </div>
 <?php else: ?>
     <div class="equipment-grid">
         <?php foreach ($equipmentList as $item): 
             $isOperational = ($item['status'] === 'operational');
-            $hasClearance = hasCertClearance($currentUser['cert_tier'], $item['req_cert_tier']);
         ?>
             <article class="equipment-card">
                 <div class="equipment-card-head">
@@ -153,13 +131,6 @@ $allLabs = $labStmt->fetchAll(PDO::FETCH_COLUMN);
                     <div class="meta-row">
                         <span>📍</span>
                         <span>Room: <strong><?= sanitize($item['lab_location']) ?></strong></span>
-                    </div>
-                    <div class="meta-row">
-                        <span>🛡️</span>
-                        <span>Req: <strong>Safety Cert <?= sanitize($item['req_cert_tier']) ?></strong></span>
-                        <?php if (!$hasClearance): ?>
-                            <span class="badge badge-warning" style="font-size:0.65rem;">Requires Higher Tier</span>
-                        <?php endif; ?>
                     </div>
 
                     <p style="font-size: 0.875rem; color: #475569; margin-top: 0.75rem; line-height: 1.4;">

@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"><form action="login.php" method="POST">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -205,34 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <span>SECURE LOGIN</span>
                 </button>
             </form>
-
-            <!-- Quick-Fill Demonstration Bar for Evaluator / Testing -->
-            <div class="demo-quickfill-card">
-                <div class="demo-quickfill-header">
-                    <span>⚡ Quick-Fill Demo Profiles (For MSc IT Evaluation):</span>
-                    <span style="font-weight:normal;color:#166534;">Password: <code>Password123!</code></span>
-                </div>
-                <div class="demo-buttons-row">
-                    <button type="button" class="btn-demo-pill" 
-                            data-email="prishan.s@science.ac.lk" 
-                            data-password="Password123!" 
-                            data-role="student">
-                        🎓 Student (Prishan)
-                    </button>
-                    <button type="button" class="btn-demo-pill" 
-                            data-email="supervisor@science.ac.lk" 
-                            data-password="Password123!" 
-                            data-role="supervisor">
-                        🔬 Supervisor (Dr. Jayasuriya)
-                    </button>
-                    <button type="button" class="btn-demo-pill" 
-                            data-email="admin@science.ac.lk" 
-                            data-password="Password123!" 
-                            data-role="admin">
-                        🛡️ System Admin (Perera)
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div class="auth-card-footer">

@@ -113,24 +113,6 @@ function getRecentNotifications(int $userId, int $limit = 5): array
 }
 
 /**
- * Check if user safety certification tier satisfies the equipment required tier.
- * Tiers: 'Tier 1' < 'Tier 2' < 'Tier 3'
- */
-function hasCertClearance(string $userTier, string $requiredTier): bool
-{
-    $rank = [
-        'Tier 1' => 1,
-        'Tier 2' => 2,
-        'Tier 3' => 3
-    ];
-
-    $uRank = $rank[$userTier] ?? 1;
-    $rRank = $rank[$requiredTier] ?? 1;
-
-    return $uRank >= $rRank;
-}
-
-/**
  * Format datetime for academic interface.
  */
 function formatDateTime(?string $datetime): string

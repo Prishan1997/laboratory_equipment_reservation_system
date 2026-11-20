@@ -81,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $startTimeRaw = trim((string)($_POST['start_time'] ?? ''));
         $endTimeRaw   = trim((string)($_POST['end_time'] ?? ''));
         $purpose      = trim((string)($_POST['purpose'] ?? ''));
-        $certVerified = isset($_POST['cert_verified']) ? 1 : 0;
 
         // Validation
         if (empty($startTimeRaw) || empty($endTimeRaw) || empty($purpose)) {
@@ -98,8 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errorMessage = 'Policy Violation: Maximum continuous reservation time is 4.0 hours per session.';
             } elseif ($equipment['status'] === 'maintenance') {
                 $errorMessage = 'Cannot reserve: Equipment is declared under active maintenance.';
-            } elseif (!$certVerified && !hasCertClearance($currentUser['cert_tier'], $equipment['req_cert_tier'])) {
-                $errorMessage = 'Safety Certification Verification required for Tier ' . $equipment['req_cert_tier'] . ' apparatus.';
             } else {
                 $startFormatted = date('Y-m-d H:i:s', $startTs);
                 $endFormatted   = date('Y-m-d H:i:s', $endTs);
@@ -125,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $insertRes = $pdo->prepare("
                             INSERT INTO reservations (
                                 equipment_id, user_id, start_time, end_time, purpose, cert_verified, status, created_at
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                            ) VALUES (?, ?, ?, ?, ?, 1, ?, NOW())
                         ");
                         $insertRes->execute([
                             $equipmentId,
@@ -133,7 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $startFormatted,
                             $endFormatted,
                             $purpose,
-                            $certVerified,
                             $initialStatus
                         ]);
 
@@ -328,16 +324,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 >Gold-nanoparticle thin film substrate characterization for MSc thesis chapter 4.</textarea>
             </div>
 
-            <div style="margin: 1.25rem 0; padding: 0.85rem; background: #f8fafc; border: 1px solid var(--border-subtle); border-radius: 6px;">
-                <label class="remember-checkbox" style="align-items: flex-start;">
-                    <input type="checkbox" name="cert_verified" value="1" checked required style="margin-top: 3px;">
-                    <span style="font-size: 0.875rem; color: #334155;">
-                        I verify that I hold an active <strong><?= sanitize($equipment['req_cert_tier']) ?></strong> Safety Certificate for this device and adhere to University Laboratory Guidelines.
-                    </span>
-                </label>
-            </div>
-
-            <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
                 <a href="catalog.php" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">
                     <span>Submit Reservation</span>

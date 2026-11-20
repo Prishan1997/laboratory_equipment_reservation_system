@@ -129,7 +129,6 @@ function loginUser(array $user): void
         'full_name'  => $user['full_name'],
         'email'      => $user['email'],
         'role'       => $user['role'],
-        'cert_tier'  => $user['cert_tier'] ?? 'Tier 1',
         'department' => $user['department'] ?? 'Faculty of Science'
     ];
 }

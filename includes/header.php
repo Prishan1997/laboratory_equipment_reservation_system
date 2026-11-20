@@ -36,7 +36,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <div>
         <span>System Time: <?= date('Y-m-d H:i') ?></span>
         &nbsp;|&nbsp;
-        <a href="#helpModal" onclick="alert('LERS Laboratory Helpdesk:\nSupport: lab-support@science.ac.lk\nOperational Hours: 08:00 - 18:00 Mon-Fri\nClearance Verification: Faculty Safety Office'); return false;">Help & Guidelines</a>
+        <a href="#helpModal" onclick="alert('LERS Laboratory Helpdesk:\nSupport: lab-support@science.ac.lk\nOperational Hours: 08:00 - 18:00 Mon-Fri'); return false;">Help & Guidelines</a>
     </div>
 </div>
 

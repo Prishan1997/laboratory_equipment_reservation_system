@@ -135,8 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch Pending Reservations (UC-08)
 $pendingStmt = $pdo->query("
-    SELECT r.*, e.equipment_name, e.model_number, e.lab_location, e.req_cert_tier,
-           u.full_name, u.id_number, u.email, u.cert_tier AS user_tier, u.department
+    SELECT r.*, e.equipment_name, e.model_number, e.lab_location,
+           u.full_name, u.id_number, u.email, u.department
     FROM reservations r
     JOIN equipment e ON r.equipment_id = e.equipment_id
     JOIN users u ON r.user_id = u.user_id
@@ -197,13 +197,11 @@ $activeReservations = $activeStmt->fetchAll();
                             <tr>
                                 <td>
                                     <strong><?= sanitize($p['full_name']) ?></strong><br>
-                                    <small style="color:var(--text-muted);">ID: <?= sanitize($p['id_number']) ?></small><br>
-                                    <span class="badge badge-info" style="font-size:0.65rem;">User: <?= sanitize($p['user_tier']) ?></span>
+                                    <small style="color:var(--text-muted);">ID: <?= sanitize($p['id_number']) ?></small>
                                 </td>
                                 <td>
                                     <strong><?= sanitize($p['equipment_name']) ?></strong><br>
-                                    <small style="color:var(--text-muted);"><?= sanitize($p['lab_location']) ?></small><br>
-                                    <span class="badge badge-warning" style="font-size:0.65rem;">Req: <?= sanitize($p['req_cert_tier']) ?></span>
+                                    <small style="color:var(--text-muted);"><?= sanitize($p['lab_location']) ?></small>
                                 </td>
                                 <td>
                                     <strong><?= formatDate($p['start_time']) ?></strong><br>

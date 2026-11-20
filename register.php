@@ -24,8 +24,7 @@ $formData = [
     'email'       => '',
     'id_number'   => '',
     'role'        => 'student',
-    'department'  => 'Department of Physics & Nanotechnology',
-    'cert_tier'   => 'Tier 1'
+    'department'  => 'Department of Physics & Nanotechnology'
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $formData['id_number']  = trim((string)($_POST['id_number'] ?? ''));
         $formData['role']       = trim((string)($_POST['role'] ?? 'student'));
         $formData['department'] = trim((string)($_POST['department'] ?? ''));
-        $formData['cert_tier']  = trim((string)($_POST['cert_tier'] ?? 'Tier 1'));
         
         $password        = (string)($_POST['password'] ?? '');
         $confirmPassword = (string)($_POST['confirm_password'] ?? '');
@@ -68,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
                 $insertStmt = $pdo->prepare("
-                    INSERT INTO users (id_number, full_name, email, password_hash, role, cert_tier, department, created_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                    INSERT INTO users (id_number, full_name, email, password_hash, role, department, created_at)
+                    VALUES (?, ?, ?, ?, ?, ?, NOW())
                 ");
 
                 $insertStmt->execute([
@@ -78,7 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $formData['email'],
                     $passwordHash,
                     $formData['role'],
-                    $formData['cert_tier'],
                     $formData['department']
                 ]);
 
@@ -88,10 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 createNotification(
                     $newUserId,
                     'Account Profile Provisioned',
-                    sprintf('Welcome %s! Your account has been provisioned with %s privileges and %s clearance.', 
+                    sprintf('Welcome %s! Your account has been provisioned with %s privileges.', 
                         $formData['full_name'], 
-                        getRoleLabel($formData['role']), 
-                        $formData['cert_tier']
+                        getRoleLabel($formData['role'])
                     ),
                     'system'
                 );
@@ -230,15 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <span>System Administrator</span>
                         </label>
                     </div>
-                </div>
-
-                <div class="auth-form-group">
-                    <label for="cert_tier" class="auth-label">Active Safety Certification Clearance Tier:</label>
-                    <select id="cert_tier" name="cert_tier" class="auth-select">
-                        <option value="Tier 1" <?= ($formData['cert_tier'] === 'Tier 1') ? 'selected' : '' ?>>Tier 1: General Laboratory Safety & Spectrometry Basics</option>
-                        <option value="Tier 2" <?= ($formData['cert_tier'] === 'Tier 2') ? 'selected' : '' ?>>Tier 2: Chemical Hygiene, Bio-Safety & Centrifugation</option>
-                        <option value="Tier 3" <?= ($formData['cert_tier'] === 'Tier 3') ? 'selected' : '' ?>>Tier 3: Laser Safety, High-Vacuum & Electron Microscopy (TEM/SEM)</option>
-                    </select>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
